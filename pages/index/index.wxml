@@ -1,11 +1,17 @@
-<!--index.wxml-->
 <view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+  <view wx:if="userInfo" class="userinfo">
+    <button wx:if="{{!userInfo.nickName && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
     <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
+
+    <button
+      wx:if="{{!userInfo.phoneNumber}}"
+      style="margin-top: 20px;"
+      open-type="getPhoneNumber"
+      bindgetphonenumber="getPhoneNumber"> 绑定手机号 </button>
+    <text wx:else>{{userInfo.phoneNumber}}</text>
   </view>
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>

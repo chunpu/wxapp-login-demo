@@ -3,3 +3,4 @@ coverage
 *.map
 *.log
 yarn.lock
+miniprogram_npm
