@@ -6,58 +6,6 @@ import Ready from 'min-ready'
 const ready = Ready()
 const qs = http.qs
 
-http.init({
-  baseURL: 'http://localhost:9999',
-  wx
-})
-
-http.interceptors.response.use(response => {
-  var {headers, data, status} = response
-  if (data && typeof data === 'object') {
-    Object.assign(response, data)
-    if (data.code !== 0) {
-      return Promise.reject(new Error(data.message || 'error'))
-    }
-  }
-  if (status >= 400) {
-    return Promise.reject(new Error('error'))
-  }
-  var setCookie = headers['set-cookie'] || ''
-  var cookie = setCookie.split('; ')[0]
-  if (cookie) {
-    var cookie = qs.parse(cookie)
-    return util.promisify(wx.getStorage)({
-      key: 'cookie'
-    }).catch(() => {}).then(res => {
-      res = res || {}
-      var allCookie = res.allCookie || {}
-      Object.assign(allCookie, cookie)
-      return util.promisify(wx.setStorage)({
-        key: 'cookie',
-        data: allCookie
-      })
-    }).then(() => {
-      return response
-    })
-  } else {
-    return response
-  }
-})
-
-http.interceptors.request.use(config => {
-  return util.promisify(wx.getStorage)({
-    key: 'cookie'
-  }).catch(() => {}).then(res => {
-    if (res && res.data) {
-      Object.assign(config.headers, {
-        Cookie: qs.stringify(res.data, ';', '=')
-      })
-    }
-    return config
-  })
-  return config
-})
-
 App({
   onLaunch: function () {
     util.promisify(wx.checkSession)().then(() => {
