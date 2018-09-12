@@ -4,7 +4,6 @@ import http from '@chunpu/http'
 import Ready from 'min-ready'
 
 const ready = Ready()
-const qs = http.qs
 
 App({
   onLaunch: function () {

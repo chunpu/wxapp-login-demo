@@ -1,5 +1,7 @@
 import http from '@chunpu/http'
 
+const qs = http.qs
+
 http.init({
   baseURL: 'http://localhost:9999',
   wx
@@ -14,6 +16,7 @@ http.interceptors.response.use(response => {
       return Promise.reject(new Error(data.message || 'error'))
     }
   }
+  return response
 })
 
 http.interceptors.response.use(response => {
@@ -21,6 +24,7 @@ http.interceptors.response.use(response => {
   if (status >= 400) {
     return Promise.reject(new Error('error'))
   }
+  return response
 })
 
 http.interceptors.response.use(response => {
@@ -91,7 +95,7 @@ const promisify = original => {
   }
 }
 
-module.exports = {
+var util = module.exports = {
   formatTime: formatTime,
   promisify
 }

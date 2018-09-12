@@ -19,7 +19,7 @@
 
 将 [wxapp-login-demo](https://github.com/chunpu/wxapp-login-demo) 和 [wxapp-login-server](https://github.com/chunpu/wxapp-login-server) 两个项目都 clone 至本地
 
-使用前请参考 [使用测试 appId](#使用测试 appId)
+使用前请参考 [使用测试 appId](#使用测试-appid)
 
 ### wxapp-login-server
 
