@@ -12,7 +12,10 @@ http.init({
 })
 
 http.interceptors.response.use(response => {
-  var {headers, status} = response
+  var {headers, data, status} = response
+  if (data && typeof data === 'object') {
+    Object.assign(response, data)
+  }
   if (status >= 400) {
     return Promise.reject(new Error('error'))
   }
