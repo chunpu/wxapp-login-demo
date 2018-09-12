@@ -15,6 +15,9 @@ http.interceptors.response.use(response => {
   var {headers, data, status} = response
   if (data && typeof data === 'object') {
     Object.assign(response, data)
+    if (data.code !== 0) {
+      return Promise.reject(new Error(data.message || 'error'))
+    }
   }
   if (status >= 400) {
     return Promise.reject(new Error('error'))
@@ -60,10 +63,13 @@ App({
     util.promisify(wx.checkSession)().then(() => {
       console.log('session 生效')
       return this.getUserInfo()
-    }).catch(() => {
+    }).then(userInfo => {
+      console.log('登录成功', userInfo)
+    }).catch(err => {
+      console.log(`自动登录失败`, err)
       return this.login()
     }).catch(err => {
-      console.log(`登录失败`, err)
+      console.log(`手动登录失败`, err)
     })
   },
   login () {

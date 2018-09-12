@@ -20,30 +20,34 @@ Page({
   bindUserInfo: function(e) {
     var detail = e.detail
     console.log({detail})
-    http.post('/user/bindinfo', {
-      encryptedData: detail.encryptedData,
-      iv: detail.iv,
-      signature: detail.signature
-    }).then(() => {
-      return app.getUserInfo().then(userInfo => {
-        this.setData({
-          userInfo: userInfo
+    if (detail.iv) {
+      http.post('/user/bindinfo', {
+        encryptedData: detail.encryptedData,
+        iv: detail.iv,
+        signature: detail.signature
+      }).then(() => {
+        return app.getUserInfo().then(userInfo => {
+          this.setData({
+            userInfo: userInfo
+          })
         })
       })
-    })
+    }
   },
   bindPhoneNumber(e) {
     var detail = e.detail
     console.log({ detail })
-    http.post('/user/bindphone', {
-      encryptedData: detail.encryptedData,
-      iv: detail.iv
-    }).then(() => {
-      return app.getUserInfo().then(userInfo => {
-        this.setData({
-          userInfo: userInfo
+    if (detail.iv) {
+      http.post('/user/bindphone', {
+        encryptedData: detail.encryptedData,
+        iv: detail.iv
+      }).then(() => {
+        return app.getUserInfo().then(userInfo => {
+          this.setData({
+            userInfo: userInfo
+          })
         })
       })
-    })
+    }
   }
 })
