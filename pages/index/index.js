@@ -17,31 +17,33 @@ Page({
       })
     })
   },
-  setUserInfo (userInfo) {
-    app.globalData.userInfo = userInfo
-    this.setData({
-      userInfo: userInfo
-    })
-  },
-  getUserInfo: function(e) {
+  bindUserInfo: function(e) {
     var detail = e.detail
     console.log({detail})
     http.post('/user/bindinfo', {
       encryptedData: detail.encryptedData,
       iv: detail.iv,
       signature: detail.signature
-    }).then(({data}) => {
-      this.setUserInfo(data)
+    }).then(() => {
+      return app.getUserInfo().then(userInfo => {
+        this.setData({
+          userInfo: userInfo
+        })
+      })
     })
   },
-  getPhoneNumber(e) {
+  bindPhoneNumber(e) {
     var detail = e.detail
     console.log({ detail })
     http.post('/user/bindphone', {
       encryptedData: detail.encryptedData,
       iv: detail.iv
-    }).then(({ data }) => {
-      this.setUserInfo(data)
+    }).then(() => {
+      return app.getUserInfo().then(userInfo => {
+        this.setData({
+          userInfo: userInfo
+        })
+      })
     })
   }
 })

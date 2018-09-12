@@ -7,7 +7,7 @@ const ready = Ready()
 const qs = http.qs
 
 http.init({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'http://localhost:9999',
   wx
 })
 
@@ -55,23 +55,35 @@ http.interceptors.request.use(config => {
 App({
   onLaunch: function () {
     util.promisify(wx.checkSession)().then(() => {
-      console.log('已登录')
+      console.log('session 生效')
+      return this.getUserInfo()
     }).catch(() => {
-      console.log('未登录')
-      return util.promisify(wx.login)().then(({code}) => {
-        console.log(`code: ${code}`)
-        return http.post('/oauth/login', {
-          code,
-          type: 'wxapp'
-        })
-      })
-    }).then(() => {
-      return http.get('/user/info')
-    }).then(({data}) => {
-      this.globalData.userInfo = data
-      ready.open()
+      return this.login()
     }).catch(err => {
       console.log(`登录失败`, err)
+    })
+  },
+  login () {
+    console.log('登录')
+    return util.promisify(wx.login)().then(({code}) => {
+      console.log(`code: ${code}`)
+      return http.post('/oauth/login', {
+        code,
+        type: 'wxapp'
+      })
+    }).then(() => {
+      return this.getUserInfo()
+    })
+  },
+  getUserInfo () {
+    return http.get('/user/info').then(response => {
+      let data = response.data
+      if (data && typeof data === 'object') {
+        this.globalData.userInfo = data
+        ready.open()
+        return data
+      }
+      return Promise.reject(response)
     })
   },
   ready (func) {
