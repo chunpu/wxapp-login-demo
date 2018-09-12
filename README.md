@@ -1,7 +1,9 @@
 微信小程序登录 demo
 ===
 
-此项目是demo的客户端, 和 [wxapp-login-server](https://github.com/chunpu/wxapp-login-server) 是兄弟项目
+小程序登录 demo 分为客户端和服务端两个部分
+
+本项目为小程序客户端, 服务端为 [wxapp-login-server](https://github.com/chunpu/wxapp-login-server)
 
 
 实现功能
@@ -17,7 +19,7 @@
 使用方法
 ---
 
-将 [wxapp-login-demo](https://github.com/chunpu/wxapp-login-demo) 和 [wxapp-login-server](https://github.com/chunpu/wxapp-login-server) 两个项目都 clone 至本地
+将小程序 [wxapp-login-demo](https://github.com/chunpu/wxapp-login-demo) 和服务端 [wxapp-login-server](https://github.com/chunpu/wxapp-login-server) 两个项目都 clone 至本地
 
 使用前请参考 [使用测试 appId](#使用测试-appid)
 
@@ -32,6 +34,10 @@ $ cnpm install
 # 启动
 $ npm start
 ```
+
+> 注意, 服务端使用 js 变量来保存用户数据, 也就是说如果重启服务端, 用户数据就清空了
+
+> 如需持久化存储用户数据, 需自行实现数据库相关逻辑
 
 ### wxapp-login-demo
 
