@@ -30,19 +30,23 @@ http.interceptors.response.use(response => {
 http.interceptors.response.use(response => {
   // 种 cookie
   var {headers} = response
-  var setCookie = headers['set-cookie'] || ''
-  var cookie = setCookie.split('; ')[0]
-  if (cookie) {
-    var cookie = qs.parse(cookie)
+  var cookies = headers['set-cookie'] || ''
+  cookies = cookies.split(/, */).reduce((prev, item) => {
+    item = item.split(/; */)[0]
+    var arr = item.split('=')
+    prev[arr[0]] = arr[1]
+    return prev
+  }, {})
+  if (cookies) {
     return util.promisify(wx.getStorage)({
       key: 'cookie'
     }).catch(() => {}).then(res => {
       res = res || {}
-      var allCookie = res.allCookie || {}
-      Object.assign(allCookie, cookie)
+      var allCookies = res.data || {}
+      Object.assign(allCookies, cookies)
       return util.promisify(wx.setStorage)({
         key: 'cookie',
-        data: allCookie
+        data: allCookies
       })
     }).then(() => {
       return response

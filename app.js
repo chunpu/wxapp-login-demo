@@ -13,7 +13,7 @@ App({
     }).then(userInfo => {
       console.log('登录成功', userInfo)
     }).catch(err => {
-      console.log(`自动登录失败`, err)
+      console.log(`自动登录失败, 重新登录`, err)
       return this.login()
     }).catch(err => {
       console.log(`手动登录失败`, err)
