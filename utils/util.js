@@ -33,9 +33,8 @@ http.interceptors.response.use(response => {
   var cookies = headers['set-cookie'] || ''
   cookies = cookies.split(/, */).reduce((prev, item) => {
     item = item.split(/; */)[0]
-    var arr = item.split('=')
-    prev[arr[0]] = arr[1]
-    return prev
+    var obj = qs.parse(item)
+    return Object.assign(prev, obj)
   }, {})
   if (cookies) {
     return util.promisify(wx.getStorage)({
@@ -51,9 +50,8 @@ http.interceptors.response.use(response => {
     }).then(() => {
       return response
     })
-  } else {
-    return response
   }
+  return response
 })
 
 http.interceptors.request.use(config => {
@@ -68,7 +66,6 @@ http.interceptors.request.use(config => {
     }
     return config
   })
-  return config
 })
 
 const formatTime = date => {
